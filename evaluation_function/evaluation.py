@@ -1,10 +1,12 @@
 from typing import Any
 from lf_toolkit.evaluation import Result, Params
+from openai import OpenAI
+from dotenv import load_dotenv
 
 def evaluation_function(
-    response: Any,
-    answer: Any,
-    params: Params,
+        response: Any,
+        answer: Any,
+        params: Params,
 ) -> Result:
     """
     Function used to evaluate a student response.
@@ -29,6 +31,28 @@ def evaluation_function(
     to output the evaluation response.
     """
 
-    return Result(
-        is_correct=response == answer
+    client = OpenAI(
+        api_key=os.environ.get("OPENROUTER_API_KEY"),
+        base_url="https://openrouter.ai/api/v1",
+        max_retries=3,
     )
+
+    SYSTEM_PROMPT = "You are a teaching assistant, give helpful feedback to the student."
+
+
+    llm_response = client.chat.completions.create(
+        model=params['model'],
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": response},
+        ],
+    )
+
+    result = Result(is_correct=True)
+
+    result.add_feedback(
+        "general",
+        llm_response.choices[0].message.content,
+    )
+
+    return result
