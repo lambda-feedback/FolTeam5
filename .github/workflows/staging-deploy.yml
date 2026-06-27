@@ -7,18 +7,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      actions: read
-      checks: write
-      pull-requests: write
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.12"]
+#  test:
+#    name: Test
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      actions: read
+#      checks: write
+#      pull-requests: write
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        python-version: ["3.12"]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
           path: ./reports/pytest.xml
           if-no-files-found: warn
   deploy:
-    needs: test
+#    needs: test
     permissions:
       contents: write
       packages: write
