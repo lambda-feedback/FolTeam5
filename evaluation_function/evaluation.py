@@ -1,7 +1,10 @@
+import os
 from typing import Any
 from lf_toolkit.evaluation import Result, Params
 from openai import OpenAI
 from dotenv import load_dotenv
+
+load_dotenv()
 
 def evaluation_function(
         response: Any,
@@ -41,7 +44,7 @@ def evaluation_function(
 
 
     llm_response = client.chat.completions.create(
-        model=params['model'],
+        model=params.get('model', 'openai/gpt-4o-mini'),
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": response},
