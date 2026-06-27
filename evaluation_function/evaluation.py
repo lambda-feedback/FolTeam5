@@ -41,7 +41,7 @@ def evaluation_function(
     )
 
     SYSTEM_PROMPT = "You are a teaching assistant, give helpful feedback to the student."
-    teacher_prompt =  params['feedback_prompt']
+    teacher_prompt = params.get('teacher_prompt', 'Evaluate the student response and provide helpful feedback.')
 
     prompt = SYSTEM_PROMPT + "\n" + teacher_prompt
 
