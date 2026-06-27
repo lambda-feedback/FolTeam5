@@ -41,12 +41,14 @@ def evaluation_function(
     )
 
     SYSTEM_PROMPT = "You are a teaching assistant, give helpful feedback to the student."
+    teacher_prompt =  params['feedback_prompt']
 
+    prompt = SYSTEM_PROMPT + "\n" + teacher_prompt
 
     llm_response = client.chat.completions.create(
         model=params.get('model', 'openai/gpt-4o-mini'),
         messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "system", "content": prompt},
             {"role": "user", "content": response},
         ],
     )
